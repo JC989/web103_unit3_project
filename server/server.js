@@ -2,9 +2,8 @@ import express from 'express'
 import path from 'path'
 import favicon from 'serve-favicon'
 import dotenv from 'dotenv'
-
-// import the router from your routes file
-
+import eventsRouter from './routes/public_events.js'
+import locationsRouter from './routes/locations.js'
 
 dotenv.config()
 
@@ -22,15 +21,16 @@ else if (process.env.NODE_ENV === 'production') {
     app.use(express.static('public'))
 }
 
-// specify the api path for the server to use
-
-
 if (process.env.NODE_ENV === 'production') {
     app.get('/*', (_, res) =>
         res.sendFile(path.resolve('public', 'index.html'))
     )
 }
 
+app.use('/api/events', eventsRouter)
+app.use('/api/locations', locationsRouter)
+
 app.listen(PORT, () => {
     console.log(`server listening on http://localhost:${PORT}`)
 })
+
